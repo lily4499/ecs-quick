@@ -1,26 +1,26 @@
 # Define the provider for AWS
 provider "aws" {
-  region = "eu-west-2"  
+  region = "us-east-1"
 }
 
 # Create an ECS cluster
 resource "aws_ecs_cluster" "my_cluster" {
-  name = "karo-ecs-cluster"  
+  name = "lili-ecs-cluster"
 }
 
 # Create a task definition
 resource "aws_ecs_task_definition" "my_task_definition" {
-  family                = "my-task-family-test"
+  family                   = "my-task-family-test"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 1024
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  container_definitions = <<EOF
+  container_definitions    = <<EOF
 [
   {
     "name": "my-container",
-    "image": "335871625378.dkr.ecr.eu-west-2.amazonaws.com/netflix-app:latest",  
+    "image": "laly9999/nodejswebapp:latest",  
     "portMappings": [
       {
         "containerPort": 80,
@@ -40,14 +40,14 @@ resource "aws_ecs_service" "my_service" {
   desired_count   = 1
   launch_type     = "FARGATE"
   network_configuration {
-    subnets          = ["subnet-0e8b3d7199bf251a4"]  
-    security_groups  = ["sg-0dab44e5556cb4879"]      
+    subnets          = ["subnet-0acf1201132147e98"]
+    security_groups  = ["sg-05c66dca512cda939"]
     assign_public_ip = true
   }
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecs_task_execution_role"
+  name               = "ecs_task_execution_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
